@@ -1,0 +1,47 @@
+@media screen and (min-width:992px) {
+	.nav-item {
+		line-height: 80px;
+	}
+}
+
+.contenedor {
+	margin-right: 15%;
+	margin-left: 15%;
+
+}
+
+.highlighted {
+            background-color: #f4f4f4; /* color de fondo que simula la selección */
+            padding: 0.2em 0.4em; /* añadir un poco de espacio alrededor del texto */
+            border-radius: 3px; /* bordes redondeados */
+        }
+        
+main {
+	margin-top: 0%;
+	background-image: url(resources/Background4.jpg);
+	color: white;
+}
+
+.logo {
+	border-radius: 100%;
+	width: 25%;
+}
+
+
+
+.logo1 {
+	border-radius: 50%;
+}
+
+.intro {
+	margin-top: 20px;
+	
+}
+
+body {
+	font-family: "Century Gothic", 'Lato', sans-serif;
+}
+
+a {
+	text-decoration: none;
+}
