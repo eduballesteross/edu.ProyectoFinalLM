@@ -1,4 +1,5 @@
 
+// Método que sirve para que al escribir en CVV salga los valores commo puntos.
 
 
 //Control de mensaje de validacion del nombre
@@ -82,11 +83,6 @@ miCiudad.addEventListener('invalid', () => {
 });
 
 
-
-
-
-
-
  //Validacion para el campo de la tarjeta de credito.
 
 const miTarjeta = document.getElementById('miTarjeta');
@@ -119,4 +115,3 @@ cvvInput.addEventListener('input', function (event) {
   const maskedValue = inputValue.replace(/./g, '*'); // Reemplazar cada carácter con un asterisco
   cvvInput.value = maskedValue;
 });
-

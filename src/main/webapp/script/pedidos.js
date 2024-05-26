@@ -1,29 +1,30 @@
-/*document.addEventListener("DOMContentLoaded", function() {
-    borrarCarrito();
-});*/
 document.addEventListener("DOMContentLoaded", function() {
-    const btnPagar = document.getElementById("btnPagar");
+    const btnPedidos = document.getElementById("btnPedidos");
 
-    btnPagar.addEventListener("click", function(event) {
-        event.preventDefault(); // Para que el boton no recargue la página.
+    btnPedidos.addEventListener("click", function(event) {
+        event.preventDefault(); // Evitar que el botón recargue la página
         
-        // Cogemos los datos a traves del getElementById
+        // Redireccionar a la página de pedidos
+        window.location.href = "pedidos.html";
+    });
+
+    const btnPedido = document.getElementById("btnPedidos");
+
+    btnPedido.addEventListener("click", function(event) {
+        event.preventDefault(); // Evitar que el botón recargue la página
+        
+        // Obtener los datos del formulario
         const nombre = document.getElementById("miNombre").value;
         const apellidos = document.getElementById("miApellido").value;
         const email = document.getElementById("miEmail").value;
         const direccion = document.getElementById("miDireccion").value;
         const ciudad = document.getElementById("miCiudad").value;
         const codigoPostal = document.getElementById("inputZip").value;
-
-        // Obtenemos los datos del localStorage se parsea para no coger los elementos en cadena de texto
         const productos = JSON.parse(localStorage.getItem("suplementos"));
 
-        // Cogemos la fecha del instante del pedido
-        const fechaPedido = new Date();
-
-        // Hacemos la lista para los pedidos
+        // Crear el nuevo pedido
         const nuevoPedido = {
-            fechaPedido: fechaPedido,
+            fechaPedido: new Date(),
             nombre: nombre,
             apellidos: apellidos,
             email: email,
@@ -33,40 +34,35 @@ document.addEventListener("DOMContentLoaded", function() {
             productos: productos ? productos : []
         };
 
-        // Guardamos los pedidos ya existentes
-        let listaPedidosExistente = JSON.parse(localStorage.getItem("listaPedidos"));
+        // Obtener la lista de pedidos existente del localStorage
+        let listaPedidos = JSON.parse(localStorage.getItem("listaPedidos")) || [];
 
-        //Comprobamos si existe ya un pedido y sino creamos un array vacio
-        if (!Array.isArray(listaPedidosExistente)) {
-            listaPedidosExistente = [];
-        }
+        // Agregar el nuevo pedido a la lista de pedidos
+        listaPedidos.push(nuevoPedido);
 
-        // Con el .push añadimos el nuevo pedido a la lista de pedidos.
-        listaPedidosExistente.push(nuevoPedido);
+        // Guardar la lista de pedidos actualizada en el localStorage
+        localStorage.setItem("listaPedidos", JSON.stringify(listaPedidos));
 
-        // Guardamos la lista pedidos como cadena de texto.
-        localStorage.setItem("listaPedidos", JSON.stringify(listaPedidosExistente));
-
-        // Al pulsar el boton nos lleva a la pagina donde se muestra los pedidos
+        // Redireccionar a la página de pedidos
         window.location.href = "pedidos.html";
     });
 });
 
-//Esperamos a que el documento HTML este completamente cargado
+// Mostrar los pedidos en la página de pedidos.html
 document.addEventListener("DOMContentLoaded", function() {
     const pedidoInfo = document.getElementById("pedidoInfo");
     
-    // Comprobamos que existe el pedidoInfo
+    // Verificar si el elemento pedidoInfo existe
     if (pedidoInfo) {
-
+        // Obtener la lista de pedidos del localStorage
         const listaPedidos = JSON.parse(localStorage.getItem("listaPedidos"));
 
-            // Verificamos si hay pedidos en la lista
+        // Verificar si hay pedidos en la lista
+        if (Array.isArray(listaPedidos) && listaPedidos.length > 0) {
+            // Limpiar contenido actual del pedidoInfo
+            pedidoInfo.innerHTML = "";
 
-        if (listaPedidos && listaPedidos.length > 0) {
-            pedidoInfo.innerHTML = ""; // Limpiar contenido actual
-            
-            // Crear la tabla de pedidos (Cabezera)
+            // Crear la tabla de pedidos
             pedidoInfo.innerHTML += `
                 <table class="table">
                     <thead class="table-dark">
@@ -83,8 +79,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     </thead>
                     <tbody>
             `;
-             // Hace un foreach para recoger los datos de los pedidos
-            // Para cada producto que encuentra crea una fila de la tabla para producto y cantidad y con el join se unen todas las filas de tabla HTML creadas en un solo string.
+
+            // Iterar sobre cada pedido y agregarlo a la tabla
             listaPedidos.forEach((pedido, index) => {
                 pedidoInfo.innerHTML += `
                     <tr>
@@ -103,7 +99,6 @@ document.addEventListener("DOMContentLoaded", function() {
                                         <th scope="col">Cantidad</th>
                                     </tr>
                                 </thead>
-           
                                 <tbody>
                                     ${pedido.productos.map(producto => `<tr><td>${producto.nombre}</td><td>${producto.cantidad}</td></tr>`).join("")}
                                 </tbody>
@@ -113,10 +108,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 `;
             });
 
-            // Cierra la tabla.
+            // Cerrar la tabla
             pedidoInfo.innerHTML += `</tbody></table>`;
         } else {
+            // Mostrar un mensaje si no hay pedidos disponibles
             pedidoInfo.innerHTML = "<p>No hay pedidos disponibles.</p>";
         }
-    } 
+    } else {
+        console.error("No se encontró el elemento pedidoInfo en la página.");
+    }
 });
