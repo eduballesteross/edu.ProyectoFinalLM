@@ -9,7 +9,14 @@ function borrarCarrito() {
     contenedorTarjetas.innerHTML = ""; 
     actualizarPrecioTotal(); 
 }
+document.getElementById("btnPagar").addEventListener("click", pagar);
 
+function pagar() {
+    // Aquí puedes agregar la lógica para el proceso de pago
+    alert("Proceso de pago iniciado.");
+    // Vaciar el carrito después de pagar
+    borrarCarrito();
+}
 /**
  * Método que crea un boton para borrar el carrito.
  * @param {*} contenedorTarjetas 
